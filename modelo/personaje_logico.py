@@ -1,22 +1,18 @@
+from espada import Espada
 class Personaje:
     """Clase base para personajes."""
     def __init__(self, nombre, salud, ataque, velocidad_movimiento):
         self.nombre = nombre
         self.salud = salud
         self.ataque = ataque
-        self.velocidad_movimiento = velocidad_movimiento
-
+        self.velocidad_movimiento = velocidad_movimiento 
+        self.arma = Espada()
+        
     def atacar(self, enemigo: "Personaje"):
-        if self.ataque + self.arma == 0:
-            golpe = 0
-        else:
-            if self.ataque + self.arma < enemigo.defensa:
-                golpe = enemigo.defensa - (self.ataque + self.arma)
-            else:
-                golpe = (self.ataque + self.arma) - enemigo.defensa 
-        return enemigo.defender(golpe)
+        
+        return enemigo.recibir_danio(golpe)
 
-    def defender(self, golpe):
+    def recibir_danio(self, golpe):
         print(f"{self.nombre} tiene {self.salud} puntos de salud.\n\tRecibió {golpe} puntos de daño.")
         self.salud = max(self.salud - golpe, 0)
         if self.salud > 0:

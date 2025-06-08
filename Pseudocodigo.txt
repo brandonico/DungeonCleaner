@@ -37,11 +37,11 @@ llamado a interacciones
 #personaje
     clase LogicaPersonaje
         atributos:
-            hp
-            atk
-            spd
-            atk_spd
-            range
+            name
+            vida
+            ataque
+            vel mov
+            vel ata
         metodos:
             atacar()
             recibir_daño()

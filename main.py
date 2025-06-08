@@ -90,7 +90,7 @@ while run == True:
     tiempo_actual = pygame.time.get_ticks()
     if jugador1.colisiona_con(jugador2):
         if tiempo_actual - tiempo_ultimo_danio > intervalo_danio:
-            personaje1.defender(personaje2.ataque)
+            personaje1.recibir_danio(personaje2.ataque)
             tiempo_ultimo_danio = tiempo_actual
         texto = fuente.render(f"Vida: {personaje1.salud}", True, BLANCO)
         if personaje1.salud <= 0:
