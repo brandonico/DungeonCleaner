@@ -1,0 +1,89 @@
+#main
+
+inicializar_librerias()
+configurar_ventana()
+definir_colores()
+crear_reloj()
+
+# Crear instancias lógicas y visuales
+crear_personaje_logico()
+crear_enemigo_logico()
+crear_personaje_visual()
+crear_enemigo_visual()
+
+bucle_principal:
+    capturar_eventos()
+
+    procesar_entrada_usuario()
+    actualizar_logica_juego()
+    actualizar_posiciones()
+
+    detectar_colisiones()
+    aplicar_efectos_colision()
+
+    dibujar_escena()
+    mostrar_textos()
+    
+    actualizar_pantalla()
+    controlar_fps()
+
+finalizar_juego()
+
+partes visuales
+llamado a interacciones
+
+
+
+#personaje
+    clase LogicaPersonaje
+        atributos:
+            hp
+            atk
+            spd
+            atk_spd
+            range
+        metodos:
+            atacar()
+            recibir_daño()
+            aumentar_stat()
+            curarse()
+            agarrar_item()
+
+    clase VisualPersonaje
+        metodos:
+            mostrar_movimiento()
+            detectar_colision()
+            dibujar_texturas()
+
+#enemigo
+    clase LogicaEnemigo
+        atributos:
+            hp
+            atk
+            spd
+        metodos:
+            atacar()
+            recibir_daño()
+            drop_hp()
+
+    clase VisualEnemigo
+        metodos:
+            mostrar_movimiento()
+            detectar_colision()
+            dibujar_texturas()
+
+#habitacion
+    clase LogicaHabitacion
+        atributos:
+            id
+            completada
+        metodos:
+            spawn_enemigos()
+            spawn_loot()
+
+    clase VisualHabitacion
+        metodos:
+            mostrar_puertas()
+            cambio_habitacion()
+            detectar_colisiones()
+            dibujar_texturas()
