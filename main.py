@@ -27,7 +27,7 @@ velocidad = 5
 rect_rojo=pygame.Rect(100, 100, 60, 60) #coordenadas iniciales y tamaño
 rect_azul=pygame.Rect(300, 200, 60, 60)
 
-personaje1 = Personaje("Guerrero", 3, 1, 10)
+personaje1 = Personaje("Guerrero", 3, 1, 10, 1)
 personaje2 = Enemigo("Enemigo", 1, 1, 2)
 jugador1 = PersonajeGrafico(100, 100, ROJO)
 jugador2 = PersonajeGrafico(300, 200, AZUL)

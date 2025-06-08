@@ -6,18 +6,8 @@ class Enemigo:
         self.ataque = ataque
         self.velocidad_movimiento = velocidad_movimiento
 
-    def atacar(self, enemigo: "Enemigo"):
-        if self.ataque + self.arma == 0:
-            golpe = 0
-        else:
-            if self.ataque + self.arma < enemigo.defensa:
-                golpe = enemigo.defensa - (self.ataque + self.arma)
-            else:
-                golpe = (self.ataque + self.arma) - enemigo.defensa 
-        return enemigo.defender(golpe)
-
     def defender(self, golpe):
-        print(f"{self.nombre} tiene {self.salud} puntos de salud.\n\tRecibió {golpe} puntos de daño.")
+        print(f"{self.nombre} tiene {self.salud} puntos de salud.\n\tRecibió {golpe} puntos de daño enemigo.")
         self.salud = max(self.salud - golpe, 0)
         if self.salud > 0:
             return self.estado()
