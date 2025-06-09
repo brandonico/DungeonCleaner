@@ -2,7 +2,7 @@ import pygame  #Librería para juegos en 2D en pyhton
 import sys     #permite salir del programa correctamente
 from vista.personaje_grafico import PersonajeGrafico
 from modelo.personaje_logico import Personaje
-from modelo.enemigo_logico import Enemigo
+from modelo.jugador_logico import Enemigo
 
 #inicializamos todos los modulos de pygame
 pygame.init()

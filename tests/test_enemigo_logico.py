@@ -1,5 +1,5 @@
 import unittest
-from modelo.enemigo_logico import Enemigo
+from modelo.jugador_logico import Enemigo
 
 class Testenemigologico(unittest.TestCase):
     """pruebas unitarias para la clase enemigo de enemigo_logico.py"""
