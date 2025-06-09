@@ -21,3 +21,7 @@ Nota: "python" puede ser reemplazado por `py`, `python.exe` o `python3.XX` (la X
 
 ## Cerrar el entorno virtual
 `deactivate`
+
+## Cómo ejecutar las pruebas
+Asegúrate de estar en la raíz del proyecto y ejecuta:
+`python -m unittest discover -s tests`

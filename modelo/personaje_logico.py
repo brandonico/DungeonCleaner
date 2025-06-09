@@ -11,10 +11,7 @@ class Personaje:
         if self.ataque + self.arma == 0:
             golpe = 0
         else:
-            if self.ataque + self.arma < enemigo.recibir_danio:
-                golpe = enemigo.recibir_danio - (self.ataque + self.arma)
-            else:
-                golpe = (self.ataque + self.arma) - enemigo.recibir_danio 
+            golpe = (self.ataque + self.arma)
         return enemigo.recibir_danio(golpe)
 
     def recibir_danio(self, golpe):
@@ -38,4 +35,4 @@ class Personaje:
     
     def mostrar_vida(self):
         """metodo que mustra la vida del personaje"""
-        return self.vida
+        return self.salud

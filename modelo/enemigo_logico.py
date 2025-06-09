@@ -27,4 +27,4 @@ class Enemigo:
     
     def mostrar_vida(self):
         """metodo que mustra la vida del personaje"""
-        return self.vida
+        return self.salud
