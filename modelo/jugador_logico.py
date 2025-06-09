@@ -1,5 +1,5 @@
-from personaje_logico import Personaje
-from espada_logica import Espada
+from modelo.personaje_logico import Personaje
+from modelo.espada_logica import Espada
 
 class Jugador(Personaje):
     def __init__(self, nombre, salud, ataque, velocidad_movimiento, arma: Espada):
