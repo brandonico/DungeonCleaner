@@ -35,7 +35,7 @@ jugador2 = PersonajeGrafico(300, 200, AZUL)
 
 #creamos la ventana principal del juego
 pantalla = pygame.display.set_mode((ANCHO, ALTO))       #crea una superficie para dibujar
-pygame.display.set_caption("Mi primer juego en pygame") #título de la ventana
+pygame.display.set_caption("Dungeon Cleaner") #título de la ventana
 
 #reloj para controlar los cuadros por segundo
 reloj  = pygame.time.Clock() 
