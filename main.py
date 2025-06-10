@@ -2,7 +2,7 @@ import pygame  #Librería para juegos en 2D en pyhton
 import sys     #permite salir del programa correctamente
 from vista.personaje_grafico import PersonajeGrafico
 from modelo.personaje_logico import Personaje
-from modelo.jugador_logico import Enemigo
+from modelo.jugador_logico import Jugador
 
 #inicializamos todos los modulos de pygame
 pygame.init()
@@ -27,8 +27,9 @@ velocidad = 5
 rect_rojo=pygame.Rect(100, 100, 60, 60) #coordenadas iniciales y tamaño
 rect_azul=pygame.Rect(300, 200, 60, 60)
 
-personaje1 = Personaje("Guerrero", 3, 1, 10, 1)
-personaje2 = Enemigo("Enemigo", 1, 1, 2)
+# Crear los objetos lógicos usando las clases correctas
+personaje1 = Jugador("Guerrero", 3, 1, 5, None)  # nombre, salud, ataque, velocidad_movimiento, arma
+personaje2 = Personaje("Enemigo", 1, 1, 2)        # nombre, salud, ataque, velocidad_movimiento
 jugador1 = PersonajeGrafico(100, 100, ROJO)
 jugador2 = PersonajeGrafico(300, 200, AZUL)
 
