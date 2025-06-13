@@ -9,6 +9,7 @@ class PersonajeGrafico:
     color: Color con el que se dibuja.
     """
     def __init__(self, x, y, color, modelo):
+    def __init__(self, x, y, color, modelo):
         """
         Inicializa la posición y color del personaje.
 
@@ -17,6 +18,7 @@ class PersonajeGrafico:
         """
         self.rect = pygame.Rect(x, y, 60, 60)
         self.color = color
+        self.modelo = modelo
         self.modelo = modelo
 
     def mover(self, direccion, cantidad, ANCHO, ALTO):
@@ -61,6 +63,14 @@ class PersonajeGrafico:
         Devuelve: True si colisionan.
         """
         return self.rect.colliderect(otro.rect)
+    
+    def atacar_a(self, otro):
+        """
+        Ataca a otro personaje.
+
+        otro: otro PersonajeGrafico.
+        """
+        self.modelo.atacar(otro.modelo)
     
     def atacar_a(self, otro):
         """
