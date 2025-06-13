@@ -176,3 +176,4 @@ cython_debug/
 
 #personal del codigo
 notas_personales.txt
+.DS_Store
