@@ -4,6 +4,7 @@ from vista.personaje_grafico import PersonajeGrafico
 from modelo.personaje_logico import Personaje
 from modelo.jugador_logico import Jugador
 from control.controlador import Controlador
+from modelo.espada_logica import Espada
 
 #inicializamos todos los modulos de pygame
 pygame.init()
@@ -24,9 +25,9 @@ pantalla.blit(texto, (10, 100))  # Dibujar el texto en la pantallas
 
 #configuramos el tamaño de la ventana del juego
 #dimensiones en pixeles
-
-jugador1 = PersonajeGrafico(100, 100, ROJO, Jugador("Guerrero", 3, 1, 5, None))  # nombre, salud, ataque, velocidad_movimiento, arma
-jugador2 = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 1, 1, 2))        # nombre, salud, ataque, velocidad_movimiento
+espada1 = Espada("Excalibur", 5, 10, 3)
+jugador1 = PersonajeGrafico(100, 100, ROJO, Jugador("Guerrero", 20, 1, 5, espada1))  # nombre, salud, ataque, velocidad_movimiento, arma
+jugador2 = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 20, 1, 2))  # Cambia la vida a 3
 
 Controlador = Controlador(jugador1, jugador2, ANCHO, ALTO)  # Controlador para manejar eventos y lógica del juego
 
@@ -41,8 +42,17 @@ intervalo_danio = 2000  # milisegundos
 while run == True:
     #capturando todos los eventos que sucedad (teclado, mouse, etc)
     for evento in pygame.event.get():
-        if evento.type == pygame.QUIT: #Si el usuario cierra la ventana
-            run = False #Terminamos el bucle si se cierra la ventana
+        if evento.type == pygame.QUIT:
+            run = False
+
+        # Detectar click izquierdo del mouse
+        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+            # Solo permite atacar si hay colisión
+            if jugador1.rect.colliderect(jugador2.rect):
+                jugador1.modelo.atacar(jugador2.modelo)
+                # Si el enemigo muere, cerrar el juego
+                if jugador2.modelo.mostrar_vida() <= 0:
+                    run = False
 
     Controlador.manejar_eventos()
 
@@ -53,7 +63,7 @@ while run == True:
     tiempo_actual = pygame.time.get_ticks()
     Controlador.verificar_colision_y_danio(tiempo_actual)
     
-    #🔧 Paso 4: Mostrar vida en pantalla
+    
     texto1 = fuente.render(f"{jugador1.modelo.mostrar_nombre()}: {jugador1.modelo.mostrar_vida()}", True, BLANCO)
     pantalla.blit(texto1, (10, 10))
     texto2 = fuente.render(f"{jugador2.modelo.mostrar_nombre()}: {jugador2.modelo.mostrar_vida()}", True, BLANCO)
@@ -63,5 +73,6 @@ while run == True:
     reloj.tick(60)#limitamos la cantidad de cuadros por segundo
 
 #Finalizamos el programa correctamente
-pygame.quit()
+pygame.quit()# ...existing code...
+
 sys.exit()
