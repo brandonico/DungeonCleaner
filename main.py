@@ -13,18 +13,17 @@ pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Dungeon Cleaner") #título de la ventana
 
 #Define colores usando el formato RGB
-NEGRO = (0, 0, 0)  #Color de fondo
-ROJO = (255, 0, 0) #Color de primer rectangulo
+NEGRO = (0, 0, 0)
+ROJO = (255, 0, 0)
 VERDE = (0, 255, 0)
-AZUL = (0, 0, 255) #Color de segundo rectangulo
+AZUL = (0, 0, 255)
 BLANCO = (255,255,255)
 
 fuente = pygame.font.SysFont(None, 36)  # Fuente por defecto, tamaño 36
 texto = fuente.render("¡Colisión!", True, BLANCO)  # Texto en blanco
-pantalla.blit(texto, (10, 100))  # Dibujar el texto en la pantallas
+pantalla.blit(texto, (10, 100))  # Dibujar el texto en la pantalla
 
-#configuramos el tamaño de la ventana del juego
-#dimensiones en pixeles
+# Definimos los personajes y sus atributos
 espada1 = Espada("Excalibur", 5, 10, 3)
 jugador1 = PersonajeGrafico(100, 100, ROJO, Jugador("Guerrero", 20, 1, 5, espada1))  # nombre, salud, ataque, velocidad_movimiento, arma
 jugador2 = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 20, 1, 2))  # Cambia la vida a 3
@@ -45,14 +44,9 @@ while run == True:
         if evento.type == pygame.QUIT:
             run = False
 
-        # Detectar click izquierdo del mouse
+        #toma el click del jugador para atacar
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-            # Solo permite atacar si hay colisión
-            if jugador1.rect.colliderect(jugador2.rect):
-                jugador1.modelo.atacar(jugador2.modelo)
-                # Si el enemigo muere, cerrar el juego
-                if jugador2.modelo.mostrar_vida() <= 0:
-                    run = False
+            Controlador.ataque()
 
     Controlador.manejar_eventos()
 

@@ -17,7 +17,7 @@ class PersonajeGrafico:
         """
         self.rect = pygame.Rect(x, y, 60, 60)
         self.color = color
-        self.modelo = modelo
+        self.modelo = modelo    #modelo es una instancia de Personaje o Jugador
 
     def mover(self, direccion, cantidad, ANCHO, ALTO):
         """
