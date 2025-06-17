@@ -11,14 +11,22 @@ class Jugador(Personaje):
         self.arma = arma
 
     def atacar(self, enemigo: Personaje):
-        """metodo para atacar al enemigo. 
-        Calcula el golpe, si el arma esta rota el golpe=ataque sino golpe=ataque+arma
-        Si usa la espada llama al metodo usar de Espada para restar durabilidad"""
-        if self.arma.esta_rota():
-            print(f"No puedes atacar, tu espada {self.arma.nombre} está rota.")
-            golpe = self.ataque  
+        """Método para atacar al enemigo.
+        Si el jugador tiene un arma y no está rota, usa el arma para calcular el daño.
+        Si no tiene arma o está rota, usa el ataque base.
+        """
+        if self.arma is None:
+            # Sin arma, usa el ataque base
+            print(f"{self.nombre} ataca sin arma causando {self.ataque} de daño.")
+            golpe = self.ataque
+        elif self.arma.esta_rota():
+            # El arma está rota, usa el ataque base
+            print(f"No puedes usar el arma {self.arma.nombre}, está rota. Usas tu ataque base.")
+            golpe = self.ataque
         else:
+            # Usa el arma para atacar
             golpe = self.ataque + self.arma.daño
+            print(f"{self.nombre} ataca con {self.arma.nombre} causando {golpe} de daño.")
             self.arma.usar()
 
         return enemigo.recibir_danio(golpe)
