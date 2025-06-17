@@ -38,7 +38,7 @@ run = True
 tiempo_ultimo_danio = 0
 intervalo_danio = 2000  # milisegundos
 
-while run == True:
+while run:
     #capturando todos los eventos que sucedad (teclado, mouse, etc)
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
@@ -46,27 +46,29 @@ while run == True:
 
         #toma el click del jugador para atacar
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-            Controlador.ataque()
+            # Solo permite atacar si el enemigo colisiona con el arma
+            if jugador1.arma_rect and jugador1.arma_rect.colliderect(jugador2.rect):
+                jugador1.modelo.atacar(jugador2.modelo)
+                # Si el enemigo muere, cerrar el juego
+                if jugador2.modelo.mostrar_vida() <= 0:
+                    run = False
 
     Controlador.manejar_eventos()
 
     pantalla.fill(NEGRO)
-    jugador1.dibujar(pantalla)
-    jugador2.dibujar(pantalla)
+    jugador1.dibujar(pantalla)  # Dibuja al jugador y su arma
+    jugador2.dibujar(pantalla)  # Dibuja al enemigo
 
     tiempo_actual = pygame.time.get_ticks()
     Controlador.verificar_colision_y_danio(tiempo_actual)
-    
-    
+
     texto1 = fuente.render(f"{jugador1.modelo.mostrar_nombre()}: {jugador1.modelo.mostrar_vida()}", True, BLANCO)
     pantalla.blit(texto1, (10, 10))
     texto2 = fuente.render(f"{jugador2.modelo.mostrar_nombre()}: {jugador2.modelo.mostrar_vida()}", True, BLANCO)
     pantalla.blit(texto2, (10, 40))
-    
-    pygame.display.flip()  # Actualiza la pantalla
-    reloj.tick(60)#limitamos la cantidad de cuadros por segundo
 
-#Finalizamos el programa correctamente
-pygame.quit()# ...existing code...
+    pygame.display.flip()
+    reloj.tick(60)
 
+pygame.quit()
 sys.exit()
