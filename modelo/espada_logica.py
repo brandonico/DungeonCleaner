@@ -1,8 +1,10 @@
 class Espada:
-    def __init__(self, nombre, daño, durabilidad, peso):
+    def __init__(self, nombre, danio, durabilidad, peso):
         """inicializa una Espada con los valores recibidos como parametros"""
         self.nombre = nombre
-        self.daño = daño
+        if int(danio)< 0:
+            raise ValueError("el daño del arma no puede ser negativo")
+        self.danio = danio
         self.durabilidad = durabilidad
         self.peso = peso
 

@@ -25,7 +25,7 @@ class Jugador(Personaje):
             golpe = self.ataque
         else:
             # Usa el arma para atacar
-            golpe = self.ataque + self.arma.daño
+            golpe = self.ataque + self.arma.danio
             print(f"{self.nombre} ataca con {self.arma.nombre} causando {golpe} de daño.")
             self.arma.usar()
 

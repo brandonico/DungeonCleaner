@@ -55,9 +55,9 @@ class Controlador:
 
     def ataque(self):
         """hace que el jugador ataque el enemigo la haber contacto entre ellos."""
-        if self.jugador1.rect.colliderect(self.jugador2.rect):
-            self.jugador1.atacar_a(self.jugador2)
-            # Si el enemigo muere, cerrar el juego
-            if self.jugador2.modelo.mostrar_vida() <= 0:
-                pygame.quit()
-                sys.exit()
+        if self.jugador1.arma_rect and self.jugador1.arma_rect.colliderect(self.jugador2.rect):
+                self.jugador1.atacar_a(self.jugador2)
+                # Si el enemigo muere, cerrar el juego
+                if self.jugador2.modelo.mostrar_vida() <= 0:
+                    pygame.quit()
+                    sys.exit()

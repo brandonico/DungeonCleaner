@@ -26,17 +26,13 @@ pantalla.blit(texto, (10, 100))  # Dibujar el texto en la pantalla
 # Definimos los personajes y sus atributos
 espada1 = Espada("Excalibur", 5, 10, 3)
 jugador1 = PersonajeGrafico(100, 100, ROJO, Jugador("Guerrero", 20, 1, 5, espada1))  # nombre, salud, ataque, velocidad_movimiento, arma
-jugador2 = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 20, 1, 2))  # Cambia la vida a 3
+jugador2 = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 20, 1, 1)) 
 
 Controlador = Controlador(jugador1, jugador2, ANCHO, ALTO)  # Controlador para manejar eventos y lógica del juego
 
 #reloj para controlar los cuadros por segundo
-reloj  = pygame.time.Clock() 
+reloj  = pygame.time.Clock()
 run = True
-
-# Control de tiempo para daño por colisión
-tiempo_ultimo_danio = 0
-intervalo_danio = 2000  # milisegundos
 
 while run:
     #capturando todos los eventos que sucedad (teclado, mouse, etc)
@@ -46,12 +42,7 @@ while run:
 
         #toma el click del jugador para atacar
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-            # Solo permite atacar si el enemigo colisiona con el arma
-            if jugador1.arma_rect and jugador1.arma_rect.colliderect(jugador2.rect):
-                jugador1.modelo.atacar(jugador2.modelo)
-                # Si el enemigo muere, cerrar el juego
-                if jugador2.modelo.mostrar_vida() <= 0:
-                    run = False
+            Controlador.ataque()
 
     Controlador.manejar_eventos()
 

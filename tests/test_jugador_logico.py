@@ -57,5 +57,18 @@ class TestJugadorLogico(unittest.TestCase):
         self.assertEqual(self.enemigo.salud, salud_inicial - 20)
         self.assertEqual(self.espada.durabilidad, 0)
 
+    def test_jugador_con_arma_none(self):
+        """Verifica que el jugador puede atacar sin arma (arma=None)"""
+        jugador_sin_arma = Jugador("SinArma", 50, 5, 3, None)
+        enemigo = Personaje("Dummy", 20, 1, 1)
+        salud_inicial = enemigo.salud
+        jugador_sin_arma.atacar(enemigo)
+        self.assertEqual(enemigo.salud, salud_inicial - 5)
+
+    def test_atacar_con_arma_negativa(self):
+        """Verifica que no se puede crear un arma con daño negativo"""
+        with self.assertRaises(ValueError):
+            Espada("Espada Negativa", -5, 5, 2)
+
 if __name__ == "__main__":
     unittest.main()
