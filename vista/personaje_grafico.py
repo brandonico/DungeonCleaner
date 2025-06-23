@@ -40,14 +40,14 @@ class PersonajeGrafico:
         cantidad: desplazamiento en píxeles.
         ANCHO, ALTO: límites de la pantalla para evitar salir.
         """
-        if direccion == "arriba":
-            self.rect.y -= cantidad
+        if direccion == "arriba":   #movimiento para arriba
+            self.rect.y -= cantidad     #movimineto del personaje
             if self.arma_surface:
-                self.arma_angle = 0  # Apunta hacia arriba
-                self.arma_pos = (self.rect.x + 25, self.rect.y - 20)  # Centrar horizontalmente
-                self.arma_surface = pygame.Surface((10, 80), pygame.SRCALPHA)  # Alto: 80, Ancho: 10
-                self.arma_surface.fill((200, 200, 0))  # Color amarillo
-                self.arma_rect = pygame.Rect(self.arma_pos[0], self.arma_pos[1], 10, 80)
+                self.arma_angle = 0  #a donde apunta el arma
+                self.arma_pos = (self.rect.x + 25, self.rect.y - 20)  #hace que el arma siga al jugador
+                self.arma_surface = pygame.Surface((10, 80), pygame.SRCALPHA)  #actualiza la direccion del arma anchoXalto
+                self.arma_surface.fill((200, 200, 0))  #le da color al arma
+                self.arma_rect = pygame.Rect(self.arma_pos[0], self.arma_pos[1], 10, 80)    #mueve la hitbox
         elif direccion == "abajo":
             self.rect.y += cantidad
             if self.arma_surface:

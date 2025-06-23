@@ -13,11 +13,11 @@ class Controlador:
         self.intervalo_danio = 2000  # milisegundos
 
     def manejar_eventos(self):
-        """esta clase sirve para manejar los controles del jugador
-        y el movimiento del oponente"""
+        """esta clase sirve para tomar el imput del jugador y traducirlo para la implementacion
+        en personaje_grafico"""
         teclas = pygame.key.get_pressed() 
 
-        # Movimiento del rectángulo rojo con W, A, S, D
+        # Movimiento del jugador con W, A, S, D
         if teclas[pygame.K_w]:
             self.jugador1.mover("arriba", self.jugador1.modelo.velocidad_movimiento, self.ancho, self.alto) #mover es de personaje_grafico
         if teclas[pygame.K_s]:
@@ -27,20 +27,33 @@ class Controlador:
         if teclas[pygame.K_d]:
             self.jugador1.mover("derecha", self.jugador1.modelo.velocidad_movimiento, self.ancho, self.alto)
 
-        # Movimiento automático del jugador2 persiguiendo a jugador1
-        dx = self.jugador1.rect.x - self.jugador2.rect.x
-        dy = self.jugador1.rect.y - self.jugador2.rect.y
+        #movimiento del arma
+        if teclas[pygame.K_UP]:
+            self.jugador1.mover_arma("arriba")
+        if teclas[pygame.K_DOWN]:
+            self.jugador1.mover_arma("abajo")
+        if teclas[pygame.K_LEFT]:
+            self.jugador1.mover_arma("izquierda")
+        if teclas[pygame.K_RIGHT]:
+            self.jugador1.mover_arma("derecha")
 
-        if abs(dx) > abs(dy):
-            if dx > 0:
-                self.jugador2.mover("derecha", self.jugador2.modelo.velocidad_movimiento, self.ancho, self.alto)
-            elif dx < 0:
-                self.jugador2.mover("izquierda", self.jugador2.modelo.velocidad_movimiento, self.ancho, self.alto)
-        else:
-            if dy > 0:
-                self.jugador2.mover("abajo", self.jugador2.modelo.velocidad_movimiento, self.ancho, self.alto)
-            elif dy < 0:
-                self.jugador2.mover("arriba", self.jugador2.modelo.velocidad_movimiento, self.ancho, self.alto)
+        paralisis = True    #variable para desactivar la IA
+
+        if paralisis == True:
+            # Movimiento automático del enemigo persiguiendo al jugador
+            dx = self.jugador1.rect.x - self.jugador2.rect.x
+            dy = self.jugador1.rect.y - self.jugador2.rect.y
+
+            if abs(dx) > abs(dy):
+                if dx > 0:
+                    self.jugador2.mover("derecha", self.jugador2.modelo.velocidad_movimiento, self.ancho, self.alto)
+                elif dx < 0:
+                    self.jugador2.mover("izquierda", self.jugador2.modelo.velocidad_movimiento, self.ancho, self.alto)
+            else:
+                if dy > 0:
+                    self.jugador2.mover("abajo", self.jugador2.modelo.velocidad_movimiento, self.ancho, self.alto)
+                elif dy < 0:
+                    self.jugador2.mover("arriba", self.jugador2.modelo.velocidad_movimiento, self.ancho, self.alto)
 
     def verificar_colision_y_danio(self, tiempo_actual):
         """verifica si el enemigo toco al jugador dentro de un intervalo de tiempo
