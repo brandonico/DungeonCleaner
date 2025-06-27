@@ -27,19 +27,9 @@ class Controlador:
         if teclas[pygame.K_d]:
             self.jugador1.mover("derecha", self.jugador1.modelo.velocidad_movimiento, self.ancho, self.alto)
 
-        #movimiento del arma
-        if teclas[pygame.K_UP]:
-            self.jugador1.mover_arma("arriba")
-        if teclas[pygame.K_DOWN]:
-            self.jugador1.mover_arma("abajo")
-        if teclas[pygame.K_LEFT]:
-            self.jugador1.mover_arma("izquierda")
-        if teclas[pygame.K_RIGHT]:
-            self.jugador1.mover_arma("derecha")
-
         paralisis = True    #variable para desactivar la IA
 
-        if paralisis == True:
+        if paralisis == False:
             # Movimiento automático del enemigo persiguiendo al jugador
             dx = self.jugador1.rect.x - self.jugador2.rect.x
             dy = self.jugador1.rect.y - self.jugador2.rect.y

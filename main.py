@@ -6,6 +6,7 @@ from modelo.jugador_logico import Jugador
 from control.controlador import Controlador
 from modelo.espada_logica import Espada
 from vista.animacion import Animacion
+from vista.animacion_enemiga import AnimacionEnemiga
 
 #inicializamos todos los modulos de pygame
 pygame.init()
@@ -28,6 +29,7 @@ fuente = pygame.font.SysFont(None, 36)  # Fuente por defecto, tamaño 36
 # Definimos los personajes y sus atributos
 espada1 = Espada("Excalibur", 5, 10, 3)
 animacion = Animacion(ANCHO_FRAME, ALTO_FRAME)
+animacion_enemigo =AnimacionEnemiga(ANCHO_FRAME, ALTO_FRAME)
 jugador = PersonajeGrafico(100, 100, ROJO, Jugador("Guerrero", 20, 1, 5, espada1), )  # nombre, salud, ataque, velocidad_movimiento, arma
 enemigo = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 20, 1, 1)) 
 
@@ -52,7 +54,7 @@ while run:
     pantalla.fill(NEGRO)
 
     #dibuja a los personajes en PersonajeGrafico
-    #jugador.dibujar(pantalla)  
+    jugador.dibujar(pantalla)  
     enemigo.dibujar(pantalla)  
 
     #dibuja el sprite sobre el rectángulo del personaje
@@ -60,8 +62,15 @@ while run:
     y = jugador.rect.y + (jugador.rect.height - animacion.imagen_actual.get_height()) // 2
     pantalla.blit(animacion.imagen_actual, (x, y))
 
+    #sprite enemigo
+    x = enemigo.rect.x + (enemigo.rect.width - animacion_enemigo.imagen_actual.get_width()) // 2
+    y = enemigo.rect.y + (enemigo.rect.height - animacion_enemigo.imagen_actual.get_height()) // 2
+    pantalla.blit(animacion_enemigo.imagen_actual, (x, y))
+
     # Actualiza la animación
-    animacion.actualizar("abajo", caminando=False)
+    animacion.actualizar("derecha", "ataque")
+    animacion_enemigo.actualizar("derecha", "quieto")
+
 
     #toma el tiempo y actualiza para hacer daño al jugador
     tiempo_actual = pygame.time.get_ticks()
