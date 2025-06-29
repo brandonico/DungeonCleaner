@@ -5,8 +5,7 @@ from modelo.personaje_logico import Personaje
 from modelo.jugador_logico import Jugador
 from control.controlador import Controlador
 from modelo.espada_logica import Espada
-from vista.animacion import Animacion
-from vista.animacion_enemiga import AnimacionEnemiga
+from vista.animacion import *
 
 #inicializamos todos los modulos de pygame
 pygame.init()
@@ -22,6 +21,7 @@ ROJO = (255, 0, 0)
 VERDE = (0, 255, 0)
 AZUL = (0, 0, 255)
 BLANCO = (255,255,255)
+GRIS = (100,100,100)
 
 fuente = pygame.font.SysFont(None, 36)  # Fuente por defecto, tamaño 36
 
@@ -30,8 +30,8 @@ fuente = pygame.font.SysFont(None, 36)  # Fuente por defecto, tamaño 36
 espada1 = Espada("Excalibur", 5, 10, 3)
 animacion = Animacion(ANCHO_FRAME, ALTO_FRAME)
 animacion_enemigo =AnimacionEnemiga(ANCHO_FRAME, ALTO_FRAME)
-jugador = PersonajeGrafico(100, 100, ROJO, Jugador("Guerrero", 20, 1, 5, espada1), )  # nombre, salud, ataque, velocidad_movimiento, arma
-enemigo = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 20, 1, 1)) 
+jugador = PersonajeGrafico(100, 100, ROJO, Jugador("Guerrero", 20, 1, 5, espada1), animacion)  # nombre, salud, ataque, velocidad_movimiento, arma
+enemigo = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 20, 1, 1), animacion_enemigo)  # nombre, salud, ataque, velocidad_movimiento
 
 input = Controlador(jugador, enemigo, ANCHO, ALTO)  # Controlador para manejar eventos y lógica del juego
 
@@ -51,25 +51,22 @@ while run:
 
     input.manejar_eventos()
 
-    pantalla.fill(NEGRO)
+    pantalla.fill(GRIS)
 
     #dibuja a los personajes en PersonajeGrafico
     jugador.dibujar(pantalla)  
     enemigo.dibujar(pantalla)  
 
-    #dibuja el sprite sobre el rectángulo del personaje
-    x = jugador.rect.x + (jugador.rect.width - animacion.imagen_actual.get_width()) // 2
-    y = jugador.rect.y + (jugador.rect.height - animacion.imagen_actual.get_height()) // 2
-    pantalla.blit(animacion.imagen_actual, (x, y))
-
+    """
     #sprite enemigo
     x = enemigo.rect.x + (enemigo.rect.width - animacion_enemigo.imagen_actual.get_width()) // 2
     y = enemigo.rect.y + (enemigo.rect.height - animacion_enemigo.imagen_actual.get_height()) // 2
     pantalla.blit(animacion_enemigo.imagen_actual, (x, y))
+    """
 
-    # Actualiza la animación
-    animacion.actualizar("derecha", "ataque")
-    animacion_enemigo.actualizar("derecha", "quieto")
+    # Actualiza la animación    caminando/ataque
+    animacion.actualizar("derecha", "quieto")
+    animacion_enemigo.actualizar("derecha", "ataque")
 
 
     #toma el tiempo y actualiza para hacer daño al jugador

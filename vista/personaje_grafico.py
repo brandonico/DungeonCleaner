@@ -1,6 +1,9 @@
 import pygame
+from vista.animacion import *
+
 
 AMARILLO = (200, 200, 0)    #constante para el color del hitbox del arma
+ANCHO_FRAME, ALTO_FRAME = 191, 191
 
 ### 🧩 Clase base:
 class PersonajeGrafico:
@@ -11,7 +14,7 @@ class PersonajeGrafico:
     rect: Rectángulo que define su posición y tamaño.
     color: Color con el que se dibuja.
     """
-    def __init__(self, x, y, color, modelo):
+    def __init__(self, x, y, color, modelo, animacion):
         """
         Inicializa la posición y color del personaje.
 
@@ -22,6 +25,7 @@ class PersonajeGrafico:
         self.rect = pygame.Rect(x, y, 30, 45)
         self.color = color
         self.modelo = modelo    #modelo es una instancia de Personaje o Jugador
+        self.animacion = animacion  # Instancia de Animacion
 
         # Crear una superficie para el arma
         self.arma_surface = None
@@ -93,7 +97,13 @@ class PersonajeGrafico:
         pantalla: superficie donde se dibuja.
         """
         # Dibuja el personaje
-        pygame.draw.rect(pantalla, self.color, self.rect)
+        #pygame.draw.rect(pantalla, self.color, self.rect)
+
+        #dibuja el sprite sobre el rectángulo del personaje
+        x = self.rect.x + (self.rect.width - self.animacion.imagen_actual.get_width()) // 2
+        y = self.rect.y + (self.rect.height - self.animacion.imagen_actual.get_height()) // 2
+        pantalla.blit(self.animacion.imagen_actual, (x, y))
+
 
         # Dibuja el arma con rotación
         if self.arma_surface:

@@ -1,89 +1,38 @@
 #main
+Crea constantes
+creo cada personaje con 3 clases distintas
+    logico
+        se encarga de las estadisticas, metodos y calculos que puede hacer un personaje cuando interactua
 
-inicializar_librerias()
-configurar_ventana()
-definir_colores()
-crear_reloj()
+    grafico
+        es el que dibuja el personaje en pantalla y registra colisiones y da las acciones de movimiento
+        sirve como puente entre el controlador y el logico, se encarga de lo visual
+        personaje logico se crea dentro de este
 
-# Crear instancias lógicas y visuales
-crear_personaje_logico()
-crear_enemigo_logico()
-crear_personaje_visual()
-crear_enemigo_visual()
-
-bucle_principal:
-    capturar_eventos()
-
-    procesar_entrada_usuario()
-    actualizar_logica_juego()
-    actualizar_posiciones()
-
-    detectar_colisiones()
-    aplicar_efectos_colision()
-
-    dibujar_escena()
-    mostrar_textos()
-    
-    actualizar_pantalla()
-    controlar_fps()
-
-finalizar_juego()
-
-partes visuales
-llamado a interacciones
+    controlador
+        es el metodo que se encarga de recibir el imput del jugador 
+        traduce el imput en los metodos que grafico tiene que ejecutar
 
 
+bucle de juego
+    tiene un metodo de controlador escuchando si hay alguna accion
+    dibuja el fondo y cierra cuando se finaliz la aplicacion
 
-#personaje
-    clase LogicaPersonaje
-        atributos:
-            name
-            vida
-            ataque
-            vel mov
-            vel ata
-        metodos:
-            atacar()
-            recibir_daño()
-            aumentar_stat()
-            curarse()
-            agarrar_item()
 
-    clase VisualPersonaje
-        metodos:
-            mostrar_movimiento()
-            detectar_colision()
-            dibujar_texturas()
+#logica
+tiene la logia de las distintas clases dentro de esta, principalmente la aplicacion de como se calcula el daño, pierde vida 
+y esas interacciones
 
-#enemigo
-    clase LogicaEnemigo
-        atributos:
-            hp
-            atk
-            spd
-        metodos:
-            atacar()
-            recibir_daño()
-            drop_hp()
+#grafico
+contiene las coliciones de los personajes y las reglas de como se van a dibjar en la pantalla
+contiene la calse animacion
+    se encarga de implementar las animaciones sobre las hitboxes que dibuja la clase grafica
+hay una clase para personaje, enemigo y objetos
 
-    clase VisualEnemigo
-        metodos:
-            mostrar_movimiento()
-            detectar_colision()
-            dibujar_texturas()
+#animacion
+toma el contenido de la tabla de graficos y lo implementa sobre el dibujo de grafico
+hay una para cada objeto distinto incluyendo el fondo
 
-#habitacion
-    clase LogicaHabitacion
-        atributos:
-            id
-            completada
-        metodos:
-            spawn_enemigos()
-            spawn_loot()
-
-    clase VisualHabitacion
-        metodos:
-            mostrar_puertas()
-            cambio_habitacion()
-            detectar_colisiones()
-            dibujar_texturas()
+#controlador
+se encarga de recibir un imput y de traducirlo en ordenes para los metodos de grafico 
+es un metodo en el bucle principal
