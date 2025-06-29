@@ -3,36 +3,66 @@ Crea constantes
 creo cada personaje con 3 clases distintas
     logico
         se encarga de las estadisticas, metodos y calculos que puede hacer un personaje cuando interactua
-
     grafico
         es el que dibuja el personaje en pantalla y registra colisiones y da las acciones de movimiento
         sirve como puente entre el controlador y el logico, se encarga de lo visual
         personaje logico se crea dentro de este
-
     controlador
         es el metodo que se encarga de recibir el imput del jugador 
         traduce el imput en los metodos que grafico tiene que ejecutar
-
 
 bucle de juego
     tiene un metodo de controlador escuchando si hay alguna accion
     dibuja el fondo y cierra cuando se finaliz la aplicacion
 
 
-#logica
+#modelo
 tiene la logia de las distintas clases dentro de esta, principalmente la aplicacion de como se calcula el daño, pierde vida 
 y esas interacciones
+    personaje
+        recibe daño
+        muestra su estado
+        muere
+    jugador
+        hereda personaje
+        ataca
+    espada
+        tiene la velocidad de ataque
+        durabilidad -
 
-#grafico
+    
+#vista
 contiene las coliciones de los personajes y las reglas de como se van a dibjar en la pantalla
-contiene la calse animacion
-    se encarga de implementar las animaciones sobre las hitboxes que dibuja la clase grafica
+contiene la calse animacion que se encarga de implementar las animaciones sobre las hitboxes que dibuja la clase grafica
 hay una clase para personaje, enemigo y objetos
+    personaje
+        movimiento de los personajes
+        los dibuja
+        calcula colisiones
+        determina quien ataca a quien
+        animacion de muerte -
+        la pantalla sigue al personaje -
+    animacion
+        hace la animacion
+        selecciona la imagen
+        decide cual cargar
+    enemigo -
+        movimeinto de los enemigos -
+        dibuja a los enemigos -
+        determina colisiones (daño) -
+        animacion de muerte -
+    mundo -
+        dibuja el fondo
+        dibuja obstaculos
 
-#animacion
-toma el contenido de la tabla de graficos y lo implementa sobre el dibujo de grafico
-hay una para cada objeto distinto incluyendo el fondo
 
-#controlador
+#control
 se encarga de recibir un imput y de traducirlo en ordenes para los metodos de grafico 
 es un metodo en el bucle principal
+    controlador
+        maneja eventos
+        hace daño si hay colision
+        toma el imput de ataque
+    ia -
+        determina el movimiento del enemigo
+        cuando ataca
