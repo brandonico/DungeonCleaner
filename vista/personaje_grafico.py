@@ -73,8 +73,8 @@ class PersonajeGrafico(pygame.sprite.Sprite):  # <-- Cambia aquí
             self.rect.left = 0
         if self.rect.right > ANCHO:
             self.rect.right = ANCHO
-        if self.rect.top < 0:
-            self.rect.top = 0
+        if self.rect.top < 32:
+            self.rect.top = 32
         if self.rect.bottom > ALTO:
             self.rect.bottom = ALTO
 

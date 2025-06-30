@@ -10,7 +10,7 @@ class EnemigoGrafico(PersonajeGrafico):
     """
     def __init__(self, x, y, color, modelo):
         super().__init__(x, y, color, modelo)
-        self.rect = pygame.Rect(x - 10, y, 50, 45)
+        self.rect = pygame.Rect(x - 10, y, 50, 50)
         self.animacion = AnimacionEnemiga(ANCHO_FRAME, ALTO_FRAME)
         self.direccion_animacion = "izquierda"  # Dirección por defecto
 
@@ -54,7 +54,7 @@ class EnemigoGrafico(PersonajeGrafico):
         #pygame.draw.rect(pantalla, self.color, self.rect)
 
         #dibuja el sprite sobre el rectángulo del personaje
-        x = self.rect.x + (self.rect.width - self.animacion.imagen_actual.get_width()) // 2
+        x = self.rect.x + 5 + (self.rect.width - self.animacion.imagen_actual.get_width()) // 2
         y = self.rect.y + (self.rect.height - self.animacion.imagen_actual.get_height()) // 2
         pantalla.blit(self.animacion.imagen_actual, (x, y))
 

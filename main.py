@@ -24,14 +24,14 @@ AZUL = (0, 0, 255)
 BLANCO = (255,255,255)
 GRIS = (100,100,100)
 
-intervalo = 1660 
+intervalo = 1660
 enemigo_muriendo = False 
 
 
 # Definimos los personajes y sus atributos
-espada1 = Espada("Excalibur", 5, 10, 3)
-jugador = PersonajeGrafico(80, ALTO/2, ROJO, Jugador("Guerrero", 20, 1, 5, espada1))  
-enemigo = EnemigoGrafico(ANCHO - 100, ALTO/2, AZUL, Personaje("Enemigo", 20, 1, 1))  
+espada1 = Espada("Excalibur", 4, 10, 3)
+jugador = PersonajeGrafico(80, ALTO/2, ROJO, Jugador("Guerrero", 3, 1, 5, espada1))  
+enemigo = EnemigoGrafico(ANCHO - 100, ALTO/2, AZUL, Personaje("Enemigo", 15, 1, 1))  
 input = Controlador(jugador, enemigo, ANCHO, ALTO)  # Controlador para manejar eventos y lógica del juego
 mundo_grafico = MundoGrafico(ANCHO, ALTO, pantalla)
 mundo_grafico.crear_enemigos(10) 
@@ -50,6 +50,11 @@ while run:
         #toma el click del jugador para atacar
         if evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN:
             input.ataque()
+
+        if evento.type == pygame.KEYDOWN and evento.key == pygame.K_KP_ENTER and enemigo.modelo.salud <= 0:
+            enemigo = EnemigoGrafico(ANCHO - 100, ALTO/2, AZUL, Personaje("Enemigo", 20, 1, 1))
+            input = Controlador(jugador, enemigo, ANCHO, ALTO) 
+
     tiempo_actual = pygame.time.get_ticks()
 
     input.manejar_eventos()
@@ -70,7 +75,7 @@ while run:
             enemigo.animacion.muerte()
         # Dibuja la animación de muerte durante un tiempo
         if pygame.time.get_ticks() - tiempo_muerte < intervalo:
-            enemigo.dibujar(pantalla)
+            enemigo.dibujar(pantalla) 
         # Después de la animación, ya no se dibuja ni procesa
     else:
         enemigo.dibujar(pantalla)

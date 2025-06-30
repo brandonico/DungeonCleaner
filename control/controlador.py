@@ -71,7 +71,7 @@ class Controlador:
     def verificar_colision_y_danio(self, tiempo_actual):
         """verifica si el enemigo toco al jugador dentro de un intervalo de tiempo
         y le quita vida al jugador si es asi."""
-        if self.jugador.colisiona_con(self.enemigo): #colisiona_con es de personaje_grafico.py
+        if self.jugador.colisiona_con(self.enemigo) and self.enemigo.modelo.salud > 0: #colisiona_con es de personaje_grafico.py
             self.enemigo.ataque(True)
             if tiempo_actual - self.tiempo_ultimo_danio > self.intervalo_danio: #si el intervalo es correcto se recibe daño
                 self.jugador.modelo.recibir_danio(self.enemigo.modelo.ataque)
