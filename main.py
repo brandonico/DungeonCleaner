@@ -1,11 +1,12 @@
 import pygame  #Librería para juegos en 2D en pyhton
 import sys     #permite salir del programa correctamente
 from vista.personaje_grafico import PersonajeGrafico
+from vista.enemigo_grafico import EnemigoGrafico
 from modelo.personaje_logico import Personaje
 from modelo.jugador_logico import Jugador
-from control.controlador import Controlador
 from modelo.espada_logica import Espada
-from vista.animacion import *
+from control.controlador import Controlador
+from vista.mundo_grafico import MundoGrafico
 
 #inicializamos todos los modulos de pygame
 pygame.init()
@@ -13,7 +14,7 @@ ANCHO, ALTO = 800, 600
 ANCHO_FRAME, ALTO_FRAME = 191, 191
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Dungeon Cleaner") #título de la ventana
-
+fuente = pygame.font.SysFont(None, 36)  # Fuente por defecto, tamaño 36
 
 #Define colores usando el formato RGB
 NEGRO = (0, 0, 0)
@@ -23,17 +24,18 @@ AZUL = (0, 0, 255)
 BLANCO = (255,255,255)
 GRIS = (100,100,100)
 
-fuente = pygame.font.SysFont(None, 36)  # Fuente por defecto, tamaño 36
+intervalo = 1660 
+enemigo_muriendo = False 
 
 
 # Definimos los personajes y sus atributos
 espada1 = Espada("Excalibur", 5, 10, 3)
-animacion = Animacion(ANCHO_FRAME, ALTO_FRAME)
-animacion_enemigo =AnimacionEnemiga(ANCHO_FRAME, ALTO_FRAME)
-jugador = PersonajeGrafico(100, 100, ROJO, Jugador("Guerrero", 20, 1, 5, espada1), animacion)  # nombre, salud, ataque, velocidad_movimiento, arma
-enemigo = PersonajeGrafico(300, 200, AZUL, Personaje("Enemigo", 20, 1, 1), animacion_enemigo)  # nombre, salud, ataque, velocidad_movimiento
-
+jugador = PersonajeGrafico(80, ALTO/2, ROJO, Jugador("Guerrero", 20, 1, 5, espada1))  
+enemigo = EnemigoGrafico(ANCHO - 100, ALTO/2, AZUL, Personaje("Enemigo", 20, 1, 1))  
 input = Controlador(jugador, enemigo, ANCHO, ALTO)  # Controlador para manejar eventos y lógica del juego
+mundo_grafico = MundoGrafico(ANCHO, ALTO, pantalla)
+mundo_grafico.crear_enemigos(10) 
+
 
 #reloj para controlar los cuadros por segundo
 reloj  = pygame.time.Clock()
@@ -48,29 +50,34 @@ while run:
         #toma el click del jugador para atacar
         if evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN:
             input.ataque()
+    tiempo_actual = pygame.time.get_ticks()
 
     input.manejar_eventos()
+    input.ia()     #manejo de la IA del enemigo
+    
 
     pantalla.fill(GRIS)
+    mundo_grafico.dibujar_fondo(pantalla)
 
     #dibuja a los personajes en PersonajeGrafico
-    jugador.dibujar(pantalla)  
-    enemigo.dibujar(pantalla)  
+    jugador.dibujar(pantalla)
+    
 
-    """
-    #sprite enemigo
-    x = enemigo.rect.x + (enemigo.rect.width - animacion_enemigo.imagen_actual.get_width()) // 2
-    y = enemigo.rect.y + (enemigo.rect.height - animacion_enemigo.imagen_actual.get_height()) // 2
-    pantalla.blit(animacion_enemigo.imagen_actual, (x, y))
-    """
-
-    # Actualiza la animación    caminando/ataque
-    animacion.actualizar("derecha", "quieto")
-    animacion_enemigo.actualizar("derecha", "ataque")
+    if enemigo.modelo.salud <= 0:
+        if not enemigo_muriendo:
+            enemigo_muriendo = True
+            tiempo_muerte = pygame.time.get_ticks()
+            enemigo.animacion.muerte()
+        # Dibuja la animación de muerte durante un tiempo
+        if pygame.time.get_ticks() - tiempo_muerte < intervalo:
+            enemigo.dibujar(pantalla)
+        # Después de la animación, ya no se dibuja ni procesa
+    else:
+        enemigo.dibujar(pantalla)
+    
 
 
     #toma el tiempo y actualiza para hacer daño al jugador
-    tiempo_actual = pygame.time.get_ticks()
     input.verificar_colision_y_danio(tiempo_actual)
 
     #muestra la salud

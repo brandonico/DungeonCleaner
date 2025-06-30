@@ -1,12 +1,12 @@
 import pygame
-from vista.animacion import *
+from vista.animacion import Animacion
 
 
 AMARILLO = (200, 200, 0)    #constante para el color del hitbox del arma
 ANCHO_FRAME, ALTO_FRAME = 191, 191
 
 ### 🧩 Clase base:
-class PersonajeGrafico:
+class PersonajeGrafico(pygame.sprite.Sprite):  # <-- Cambia aquí
     """
     Representa un personaje gráfico en pantalla.
 
@@ -14,7 +14,8 @@ class PersonajeGrafico:
     rect: Rectángulo que define su posición y tamaño.
     color: Color con el que se dibuja.
     """
-    def __init__(self, x, y, color, modelo, animacion):
+    def __init__(self, x, y, color, modelo):
+        super().__init__()  # <-- Llama al constructor de Sprite
         """
         Inicializa la posición y color del personaje.
 
@@ -22,24 +23,21 @@ class PersonajeGrafico:
         color: tupla RGB.
         modelo: instancia del modelo lógico asociado al personaje.
         """
+        self.x = x
+        self.y = y
         self.rect = pygame.Rect(x, y, 30, 45)
         self.color = color
         self.modelo = modelo    #modelo es una instancia de Personaje o Jugador
-        self.animacion = animacion  # Instancia de Animacion
+        
 
-        # Crear una superficie para el arma
-        self.arma_surface = None
-        self.arma_angle = 0  # Ángulo inicial del arma
-        self.arma_pos = (self.rect.x + 20, self.rect.y + 20)  # Posición inicial del arma
-        self.arma_rect = None  # Inicializar arma_rect como None
+        self.animacion = Animacion(ANCHO_FRAME, ALTO_FRAME)
+        self.direccion_animacion = "derecha"  # Dirección por defecto
+        self.direccion_de_ataque = "derecha"  # Dirección de ataque por defecto
+        self.en_ataque = False
 
-        if hasattr(self.modelo, 'arma') and self.modelo.arma:
-            # Cambiar el tamaño del arma para que sea más larga
-            self.arma_surface = pygame.Surface((80, 10), pygame.SRCALPHA)  # Ancho: 80, Alto: 10
-            self.arma_surface.fill(AMARILLO)  # Color amarillo para el arma
-            self.arma_rect = pygame.Rect(self.arma_pos[0], self.arma_pos[1], 80, 10)  # Rectángulo del arma
+        self.arma = pygame.Rect(x + 30, y, 65, 45)   #posicion a la derecha
 
-    def mover(self, direccion, cantidad, ANCHO, ALTO):
+    def mover(self, direccion, cantidad, ANCHO, ALTO, en_ataque=False):
         """
         Mueve el personaje en una dirección dada.
 
@@ -47,38 +45,28 @@ class PersonajeGrafico:
         cantidad: desplazamiento en píxeles.
         ANCHO, ALTO: límites de la pantalla para evitar salir.
         """
+        if direccion == "izquierda" or direccion == "derecha":
+            self.direccion_animacion = direccion  # Guarda la dirección actual
+        self.direccion_de_ataque = direccion 
+
         if direccion == "arriba":   #movimiento para arriba
             self.rect.y -= cantidad     #movimineto del personaje
-            if self.arma_surface:
-                self.arma_angle = 0  #a donde apunta el arma
-                self.arma_pos = (self.rect.x + 25, self.rect.y - 20)  #hace que el arma siga al jugador
-                self.arma_surface = pygame.Surface((10, 80), pygame.SRCALPHA)  #actualiza la direccion del arma anchoXalto
-                self.arma_surface.fill(AMARILLO)  #le da color al arma
-                self.arma_rect = pygame.Rect(self.arma_pos[0], self.arma_pos[1], 10, 80)    #mueve la hitbox
+            self.arma = pygame.Rect(self.rect.x - 50, self.rect.y - 45, 135, 50)
+            
         elif direccion == "abajo":
             self.rect.y += cantidad
-            if self.arma_surface:
-                self.arma_angle = 180  # Apunta hacia abajo
-                self.arma_pos = (self.rect.x + 25, self.rect.y + self.rect.height)
-                self.arma_surface = pygame.Surface((10, 80), pygame.SRCALPHA)  # Alto: 80, Ancho: 10
-                self.arma_surface.fill(AMARILLO)  # Color amarillo
-                self.arma_rect = pygame.Rect(self.arma_pos[0], self.arma_pos[1], 10, 80)
+            self.arma = pygame.Rect(self.rect.x - 20, self.rect.y + 45, 110, 60)
+            
         elif direccion == "izquierda":
             self.rect.x -= cantidad
-            if self.arma_surface:
-                self.arma_angle = 0  # Apunta hacia la izquierda (horizontal, sin rotación)
-                self.arma_pos = (self.rect.x - 80, self.rect.y + 25)  # Centrar verticalmente
-                self.arma_surface = pygame.Surface((80, 10), pygame.SRCALPHA)  # Ancho: 80, Alto: 10
-                self.arma_surface.fill(AMARILLO)  # Color amarillo
-                self.arma_rect = pygame.Rect(self.arma_pos[0], self.arma_pos[1], 80, 10)
+            self.arma = pygame.Rect(self.rect.x - 65, self.rect.y, 65, 45)
+           
         elif direccion == "derecha":
             self.rect.x += cantidad
-            if self.arma_surface:
-                self.arma_angle = 0  # Apunta hacia la derecha (horizontal, sin rotación)
-                self.arma_pos = (self.rect.x + self.rect.width, self.rect.y + 25)
-                self.arma_surface = pygame.Surface((80, 10), pygame.SRCALPHA)  # Ancho: 80, Alto: 10
-                self.arma_surface.fill(AMARILLO)  # Color amarillo
-                self.arma_rect = pygame.Rect(self.arma_pos[0], self.arma_pos[1], 80, 10)
+            self.arma = pygame.Rect(self.rect.x + 30, self.rect.y, 65, 45)
+
+        if not self.en_ataque:
+            self.animacion.actualizar(f"{self.direccion_animacion}", "caminando")  #actualiza la animacion del personaje
 
         # Limitar el movimiento dentro de los límites de la pantalla
         if self.rect.left < 0:
@@ -90,6 +78,13 @@ class PersonajeGrafico:
         if self.rect.bottom > ALTO:
             self.rect.bottom = ALTO
 
+    def quieto(self):
+        """
+        Mantiene al personaje en su posición actual sin moverse.
+        Actualiza la animación a "quieto".
+        """
+        self.animacion.actualizar(self.direccion_animacion, "quieto")
+
     def dibujar(self, pantalla):
         """
         Dibuja el personaje sobre la superficie dada.
@@ -98,18 +93,12 @@ class PersonajeGrafico:
         """
         # Dibuja el personaje
         #pygame.draw.rect(pantalla, self.color, self.rect)
+        #pygame.draw.rect(pantalla, AMARILLO, self.arma)
 
         #dibuja el sprite sobre el rectángulo del personaje
         x = self.rect.x + (self.rect.width - self.animacion.imagen_actual.get_width()) // 2
         y = self.rect.y + (self.rect.height - self.animacion.imagen_actual.get_height()) // 2
         pantalla.blit(self.animacion.imagen_actual, (x, y))
-
-
-        # Dibuja el arma con rotación
-        if self.arma_surface:
-            arma_rotada = pygame.transform.rotate(self.arma_surface, self.arma_angle)
-            arma_rect = arma_rotada.get_rect(center=(self.arma_pos[0] + 20, self.arma_pos[1] + 5))
-            pantalla.blit(arma_rotada, arma_rect.topleft)
 
     def colisiona_con(self, otro):  
         """
@@ -120,6 +109,14 @@ class PersonajeGrafico:
         """
         return self.rect.colliderect(otro.rect)
     
+    def ataque(self, atacando=False):
+        """
+        Realiza un ataque, actualizando la animación a "ataque".
+        """
+        self.en_ataque = atacando
+        if atacando:
+            self.animacion.actualizar(self.direccion_de_ataque, "ataque")
+    
     def atacar_a(self, otro):
         """
         Ataca a otro personaje.
@@ -127,3 +124,7 @@ class PersonajeGrafico:
         otro: otro PersonajeGrafico.
         """
         self.modelo.atacar(otro.modelo)
+    
+    def muere(self):
+        if self.modelo.salud <= 0:
+            self.animacion.muerte(False)
